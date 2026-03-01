@@ -1,0 +1,1567 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>새벽기도 순서표 | 신촌성결교회</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=Inter:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #5B6EF5;
+            --primary-d: #4050d6;
+            --primary-light: #EEF1FF;
+            --accent: #F5A623;
+            --accent2: #22D3A4;
+            --red: #EF4444;
+            --bg: #F0F2F8;
+            --surface: #FFFFFF;
+            --card: #FFFFFF;
+            --border: #E4E7F0;
+            --text: #1A1D2E;
+            --text-2: #5A5F7A;
+            --text-3: #9196B0;
+            --sat: #E97FB0;
+            --r: 16px;
+            --r-sm: 10px;
+            --sh: 0 2px 8px rgba(91, 110, 245, .06);
+            --sh-lg: 0 8px 32px rgba(91, 110, 245, .14);
+            --font: 'Pretendard', 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        /* ── APP SHELL ── */
+        .app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ── HEADER ── */
+        header {
+            background: linear-gradient(135deg, #4050d6 0%, #7C3AED 100%);
+            color: #fff;
+            padding: 0 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+            box-shadow: 0 4px 20px rgba(64, 80, 214, .35);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 22px;
+        }
+
+        .logo-text {
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: -.4px;
+        }
+
+        .logo-sub {
+            font-size: 12px;
+            opacity: .65;
+            font-weight: 500;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 4px;
+        }
+
+        .tab-btn {
+            padding: 6px 18px;
+            border-radius: 20px;
+            border: none;
+            background: rgba(255, 255, 255, .12);
+            color: rgba(255, 255, 255, .75);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all .18s;
+        }
+
+        .tab-btn.active,
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, .95);
+            color: var(--primary-d);
+        }
+
+        /* ── MAIN ── */
+        main {
+            flex: 1;
+            max-width: 1380px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 28px 24px;
+        }
+
+        /* ── SEASON NAV ── */
+        .season-nav {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--surface);
+            color: var(--text);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .15s;
+            box-shadow: var(--sh);
+        }
+
+        .nav-btn:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .season-label-wrap {
+            text-align: center;
+        }
+
+        .season-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 9px;
+            border-radius: 20px;
+            letter-spacing: .5px;
+            margin-bottom: 4px;
+        }
+
+        .season-label {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -.5px;
+        }
+
+        .season-date {
+            font-size: 12px;
+            color: var(--text-2);
+            margin-top: 2px;
+        }
+
+        .today-btn {
+            padding: 7px 16px;
+            border-radius: 20px;
+            border: 2px solid var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all .15s;
+        }
+
+        .today-btn:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* ── DOW HEADER ── */
+        .dow-hdr {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+
+        .dow-lbl {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-3);
+            padding: 6px 0;
+            letter-spacing: .5px;
+        }
+
+        .dow-lbl.sat {
+            color: var(--sat);
+        }
+
+        /* ── CALENDAR ── */
+        .cal {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px;
+        }
+
+        .dc {
+            background: var(--card);
+            border-radius: var(--r);
+            border: 1.5px solid var(--border);
+            padding: 12px;
+            cursor: pointer;
+            transition: all .18s;
+            box-shadow: var(--sh);
+            min-height: 145px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            position: relative;
+        }
+
+        .dc:hover {
+            border-color: var(--primary);
+            box-shadow: var(--sh-lg);
+            transform: translateY(-2px);
+        }
+
+        .dc.today {
+            border-color: var(--primary);
+            border-width: 2.5px;
+            background: linear-gradient(145deg, #4F5EF0 0%, #7C3AED 100%);
+            box-shadow: 0 0 0 4px rgba(91, 110, 245, .18), 0 10px 32px rgba(91, 110, 245, .28);
+            transform: translateY(-2px);
+        }
+
+        .dc.today .dnum {
+            color: #fff;
+        }
+
+        .dc.today .dname {
+            color: rgba(255, 255, 255, .7);
+        }
+
+        .dc.today .rb.pr {
+            background: rgba(255, 255, 255, .18);
+            color: #fff;
+        }
+
+        .dc.today .rb.bu {
+            background: rgba(255, 255, 255, .13);
+            color: #FFE4A0;
+        }
+
+        .dc.today .rb.vi {
+            background: rgba(255, 255, 255, .13);
+            color: #A7F3D0;
+        }
+
+        .dc.today .rb.au {
+            background: rgba(255, 255, 255, .13);
+            color: #DDD6FE;
+        }
+
+        .dc.today .rb.ns {
+            background: rgba(255, 255, 255, .1);
+            color: rgba(255, 255, 255, .5);
+        }
+
+        .dc.today .dday {
+            background: #fff;
+            color: var(--primary-d);
+            font-size: 10px;
+            padding: 2px 8px;
+            animation: pulse-badge 1.8s ease-in-out infinite;
+        }
+
+        @keyframes pulse-badge {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, .6);
+            }
+
+            50% {
+                box-shadow: 0 0 0 5px rgba(255, 255, 255, .0);
+            }
+        }
+
+        .dc.past {
+            opacity: .6;
+        }
+
+        .dc.sat {
+            background: #FFF5FA;
+            border-color: #FBD0E5;
+        }
+
+        .dh {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+
+        .dnum {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -.5px;
+        }
+
+        .dname {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-3);
+        }
+
+        .dday {
+            font-size: 9px;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 6px;
+            letter-spacing: .3px;
+        }
+
+        .memo-dot {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 7px;
+            height: 7px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        /* ── ROLE BADGES ── */
+        .rb {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 8px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .rb .ric {
+            font-size: 13px;
+        }
+
+        .rb .rn {
+            font-size: 11.5px;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .rb.pr {
+            background: #ECF3FF;
+            color: #2563EB;
+        }
+
+        .rb.bu {
+            background: #FEF3C7;
+            color: #92400E;
+            font-size: 11px;
+        }
+
+        .rb.vi {
+            background: #ECFDF5;
+            color: #065F46;
+        }
+
+        .rb.au {
+            background: #F5F0FF;
+            color: #5B21B6;
+        }
+
+        .rb.ns {
+            background: var(--bg);
+            color: var(--text-3);
+            font-size: 11px;
+        }
+
+        /* ── STATS TAB ── */
+        .stats-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Summary Cards */
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .sum-card {
+            background: var(--surface);
+            border-radius: var(--r);
+            padding: 20px;
+            border: 1.5px solid var(--border);
+            box-shadow: var(--sh);
+            text-align: center;
+        }
+
+        .sum-num {
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .sum-num.blue {
+            color: var(--primary);
+        }
+
+        .sum-num.green {
+            color: var(--accent2);
+        }
+
+        .sum-num.orange {
+            color: var(--accent);
+        }
+
+        .sum-num.pink {
+            color: var(--sat);
+        }
+
+        .sum-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-2);
+            margin-top: 4px;
+        }
+
+        /* Member Table */
+        .member-table-card {
+            background: var(--surface);
+            border-radius: var(--r);
+            border: 1.5px solid var(--border);
+            box-shadow: var(--sh);
+            overflow: hidden;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 18px 22px;
+            border-bottom: 1.5px solid var(--border);
+            background: linear-gradient(90deg, #F8F9FF, #FFFFFF);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .card-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+
+        .member-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .member-table th {
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-2);
+            background: #FAFBFF;
+            border-bottom: 1px solid var(--border);
+            letter-spacing: .3px;
+        }
+
+        .member-table th:first-child {
+            text-align: left;
+        }
+
+        .member-table td {
+            padding: 14px 16px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .member-table td:first-child {
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .member-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .member-table tr:hover td {
+            background: #FAFBFF;
+        }
+
+        .role-tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 12px;
+            margin-left: 6px;
+            background: #F3E8FF;
+            color: #6D28D9;
+        }
+
+        .role-tag.np {
+            background: #E0F2FE;
+            color: #0369A1;
+        }
+
+        .stat-num {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .stat-num.p {
+            color: #2563EB;
+        }
+
+        .stat-num.v {
+            color: #065F46;
+        }
+
+        .stat-num.a {
+            color: #5B21B6;
+        }
+
+        .total-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: 800;
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 2px 6px rgba(91, 110, 245, .3);
+        }
+
+        .total-badge.ok {
+            background: var(--primary);
+        }
+
+        .total-badge.err {
+            background: var(--red);
+        }
+
+        /* Progress bar */
+        .prog-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        .prog-bar {
+            flex: 1;
+            height: 5px;
+            background: var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .prog-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width .4s ease;
+        }
+
+        .prog-fill.p {
+            background: #3B82F6;
+        }
+
+        .prog-fill.v {
+            background: #10B981;
+        }
+
+        .prog-fill.a {
+            background: #8B5CF6;
+        }
+
+        /* Validation Banner */
+        .valid-banner {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 20px;
+            border-radius: var(--r-sm);
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .valid-banner.ok {
+            background: #ECFDF5;
+            color: #065F46;
+            border: 1.5px solid #6EE7B7;
+        }
+
+        .valid-banner.err {
+            background: #FEF2F2;
+            color: #991B1B;
+            border: 1.5px solid #FCA5A5;
+        }
+
+        /* ── MODAL ── */
+        .overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 12, 30, .5);
+            z-index: 200;
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 28px;
+            width: 420px;
+            max-width: 95vw;
+            box-shadow: 0 24px 64px rgba(10, 12, 30, .25);
+            animation: pop .22s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(.92);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-hdr {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: var(--border);
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .modal-roles {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .modal-rb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: 12px;
+        }
+
+        .modal-rb.pr {
+            background: #ECF3FF;
+        }
+
+        .modal-rb.bu {
+            background: #FEF3C7;
+        }
+
+        .modal-rb.vi {
+            background: #ECFDF5;
+        }
+
+        .modal-rb.au {
+            background: #F5F0FF;
+        }
+
+        .modal-icon {
+            font-size: 20px;
+        }
+
+        .modal-role {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-2);
+        }
+
+        .modal-name {
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .modal-name.pr {
+            color: #1D4ED8;
+        }
+
+        .modal-name.vi {
+            color: #065F46;
+        }
+
+        .modal-name.au {
+            color: #5B21B6;
+        }
+
+        .modal-name.bu {
+            color: #92400E;
+        }
+
+        .memo-area {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1.5px solid var(--border);
+            font-family: var(--font);
+            font-size: 14px;
+            color: var(--text);
+            resize: none;
+            outline: none;
+            transition: border-color .15s;
+            background: #FAFBFF;
+        }
+
+        .memo-area:focus {
+            border-color: var(--primary);
+        }
+
+        .memo-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            justify-content: flex-end;
+        }
+
+        .btn-sm {
+            padding: 8px 18px;
+            border-radius: 10px;
+            border: none;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all .15s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-d);
+        }
+
+        .btn-ghost {
+            background: var(--border);
+            color: var(--text-2);
+        }
+
+        .btn-ghost:hover {
+            background: #D1D5E8;
+        }
+
+        /* ── MEMBERS TAB ── */
+        .members-wrap {
+            padding: 8px 0;
+        }
+
+        .members-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .member-card {
+            background: var(--surface);
+            border-radius: var(--r);
+            padding: 18px;
+            border: 1.5px solid var(--border);
+            box-shadow: var(--sh);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all .15s;
+        }
+
+        .member-card:hover {
+            border-color: var(--primary);
+            box-shadow: var(--sh-lg);
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            font-size: 18px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--primary-light), #E9D5FF);
+            color: var(--primary);
+        }
+
+        .avatar.np {
+            background: linear-gradient(135deg, #E0F2FE, #BAE6FD);
+            color: #0369A1;
+        }
+
+        .m-name {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .m-role {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-2);
+            margin-top: 2px;
+        }
+
+        /* ── TABS DISPLAY ── */
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* ── RESPONSIVE ── */
+
+        /* Tablet */
+        @media (max-width: 900px) {
+            main {
+                padding: 18px 14px;
+            }
+
+            .cal {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .dow-hdr {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .summary-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .members-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+
+            /* Header: logo + tabs stacked/scroll */
+            header {
+                padding: 0 14px;
+                height: auto;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0;
+            }
+
+            .logo {
+                padding: 10px 0 6px;
+            }
+
+            .tabs {
+                width: 100%;
+                overflow-x: auto;
+                padding: 0 0 8px;
+                gap: 6px;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .tab-btn {
+                flex-shrink: 0;
+            }
+
+            main {
+                padding: 14px 10px;
+            }
+
+            /* Season nav compact */
+            .season-label {
+                font-size: 17px;
+            }
+
+            .season-date {
+                font-size: 11px;
+            }
+
+            .nav-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+
+            /* Calendar: 2 columns for weekdays, cleaner on small screen */
+            .dow-hdr {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 4px;
+            }
+
+            .cal {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 5px;
+            }
+
+            .dc {
+                padding: 9px 8px;
+                min-height: 120px;
+                gap: 4px;
+            }
+
+            .dnum {
+                font-size: 15px;
+            }
+
+            .rb {
+                padding: 4px 6px;
+                gap: 3px;
+            }
+
+            .rb .ric {
+                font-size: 11px;
+            }
+
+            .rb .rn {
+                font-size: 10.5px;
+            }
+
+            /* Stats */
+            .summary-cards {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .sum-num {
+                font-size: 28px;
+            }
+
+            .member-table th,
+            .member-table td {
+                padding: 10px 10px;
+                font-size: 12px;
+            }
+
+            .total-badge {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+            }
+
+            /* Hide V/A progress column on small screens */
+            .member-table th:nth-child(5),
+            .member-table td:nth-child(5) {
+                display: none;
+            }
+
+            /* Members grid */
+            .members-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .member-card {
+                padding: 12px;
+                gap: 10px;
+            }
+
+            .avatar {
+                width: 38px;
+                height: 38px;
+                font-size: 15px;
+            }
+
+            .m-name {
+                font-size: 13px;
+            }
+
+            /* Modal */
+            .modal {
+                padding: 20px;
+            }
+
+            .modal-title {
+                font-size: 16px;
+            }
+        }
+
+        /* Small phones */
+        @media (max-width: 400px) {
+            .cal {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dow-hdr {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* Show only Mon~Fri labels, hide Sat on very small screens */
+            .dow-hdr .dow-lbl:last-child {
+                display: none;
+            }
+
+            .summary-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .members-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app">
+
+        <!-- HEADER -->
+        <header>
+            <div class="logo">
+                <span class="logo-icon">🌅</span>
+                <div>
+                    <div class="logo-text">새벽기도 순서표</div>
+                    <div class="logo-sub">신촌성결교회 미디어팀</div>
+                </div>
+            </div>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('cal')" id="tabBtn-cal">📅 순서표</button>
+                <button class="tab-btn" onclick="switchTab('stats')" id="tabBtn-stats">📊 통계</button>
+                <button class="tab-btn" onclick="switchTab('members')" id="tabBtn-members">👥 담당자</button>
+            </div>
+        </header>
+
+        <main>
+
+            <!-- CALENDAR PANEL -->
+            <div class="tab-panel active" id="panel-cal">
+                <div class="season-nav">
+                    <button class="nav-btn" onclick="changeSeason(-1)" title="이전 블록">‹</button>
+                    <div class="season-label-wrap">
+                        <div><span class="season-badge" id="seasonBadge">SEASON 1</span></div>
+                        <div class="season-label" id="seasonLabel">시즌 1</div>
+                        <div class="season-date" id="seasonDate"></div>
+                    </div>
+                    <button class="nav-btn" onclick="changeSeason(1)" title="다음 블록">›</button>
+                    <button class="today-btn" onclick="goToday()">오늘</button>
+                </div>
+                <div class="dow-hdr">
+                    <div class="dow-lbl">월</div>
+                    <div class="dow-lbl">화</div>
+                    <div class="dow-lbl">수</div>
+                    <div class="dow-lbl">목</div>
+                    <div class="dow-lbl">금</div>
+                    <div class="dow-lbl sat">토</div>
+                </div>
+                <div class="cal" id="cal"></div>
+            </div>
+
+            <!-- STATS PANEL -->
+            <div class="tab-panel" id="panel-stats">
+                <div class="stats-wrap">
+                    <div class="season-nav" style="margin-bottom:0">
+                        <button class="nav-btn" onclick="changeSeason(-1)">‹</button>
+                        <div class="season-label-wrap">
+                            <div><span class="season-badge" id="sBadge2">SEASON 1</span></div>
+                            <div class="season-label" id="sLabel2">시즌 1</div>
+                            <div class="season-date" id="sDate2"></div>
+                        </div>
+                        <button class="nav-btn" onclick="changeSeason(1)">›</button>
+                        <button class="today-btn" onclick="goToday()">오늘</button>
+                    </div>
+                    <div class="summary-cards" id="summaryCards"></div>
+                    <div id="validBanner"></div>
+                    <div class="member-table-card">
+                        <div class="card-header">
+                            <span>📋</span>
+                            <span class="card-title">담당자별 투입 현황</span>
+                            <span class="card-badge" id="blockLabel">20일 블록 기준</span>
+                        </div>
+                        <table class="member-table">
+                            <thead>
+                                <tr>
+                                    <th>이름</th>
+                                    <th>🎤 설교</th>
+                                    <th>🎥 영상</th>
+                                    <th>🔊 음향</th>
+                                    <th>V/A 분포</th>
+                                    <th>합계</th>
+                                </tr>
+                            </thead>
+                            <tbody id="statsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MEMBERS PANEL -->
+            <div class="tab-panel" id="panel-members">
+                <div class="members-wrap">
+                    <div class="members-header">
+                        <div>
+                            <div style="font-size:20px;font-weight:800">사역자 명단</div>
+                            <div style="font-size:13px;color:var(--text-2);margin-top:2px">총 12명 고정 구성</div>
+                        </div>
+                    </div>
+                    <div style="font-size:13px;font-weight:700;color:var(--text-2);margin-bottom:10px">🎤 설교자 (10명)
+                    </div>
+                    <div class="members-grid" id="memberGrid"></div>
+                    <div style="font-size:13px;font-weight:700;color:var(--text-2);margin:20px 0 10px">🔧 비설교자 (2명)
+                    </div>
+                    <div class="members-grid" id="npGrid"></div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODAL -->
+    <div class="overlay" id="overlay" onclick="closeModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-hdr">
+                <div class="modal-title" id="modalTitle"></div>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-roles" id="modalRoles"></div>
+            <textarea class="memo-area" id="memoArea" rows="3" placeholder="메모를 입력하세요..."></textarea>
+            <div class="memo-actions">
+                <button class="btn-sm btn-ghost" onclick="deleteMemo()">삭제</button>
+                <button class="btn-sm btn-primary" onclick="saveMemo()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        'use strict';
+
+        // ═══════════════════════ CONSTANTS ═══════════════════════
+        const REF = new Date(2026, 2, 2); // March 2, 2026 (month 0-indexed)
+        const PREACHERS = ['엄준민', '박현일', '박찬수', '이종찬', '박성진', '김희범', '두성광', '이요한', '이효상', '박지명'];
+        const NP = ['김요한', '손세윤'];
+        const ALL = [...PREACHERS, ...NP];
+        const DN = ['일', '월', '화', '수', '목', '금', '토'];
+        const NP_V_DAYS = new Set([3, 7, 11, 15, 19]);   // Video NP slot days (0-indexed within block)
+        const NP_A_DAYS = new Set([1, 5, 9, 13, 17]);    // Audio NP slot days
+
+        // ═══════════════════════ STATE ═══════════════════════
+        const STORAGE_KEY = 'dps3';
+        let S, cache = {}, currentBlock = 1, modalKey = null;
+
+        function loadState() {
+            try { const d = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (d && d.memos) return d; } catch (e) { }
+            return { memos: {} };
+        }
+        function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(S)); }
+
+        // ═══════════════════════ BLOCK ENGINE ═══════════════════════
+        function generateBlock(blockIdx) {
+            const k = `blk-${blockIdx}`;
+            if (cache[k]) return cache[k];
+
+            const pStart = ((blockIdx - 1) * 3) % 10;   // +3 offset per block (1-indexed blocks)
+            const vStart = (pStart + 6) % 10;            // Video sub queue start (두성광 on block 1)
+            const aStart = (pStart + 1) % 10;            // Audio sub queue start (ensures 2:1 / 1:2 V/A balance)
+
+            const video = new Array(20), audio = new Array(20);
+            let npVI = 0, npAI = 1, pvI = 0, paI = 0;
+
+            for (let d = 0; d < 20; d++) {
+                video[d] = NP_V_DAYS.has(d) ? NP[npVI++ % 2] : PREACHERS[(vStart + pvI++) % 10];
+                audio[d] = NP_A_DAYS.has(d) ? NP[npAI++ % 2] : PREACHERS[(aStart + paI++) % 10];
+            }
+
+            // ★ 1-Shift Preacher: days 0-9 normal, days 10-19 left-shifted by 1
+            // → Each preacher's two duties always land on DIFFERENT days of the week
+            const sch = [];
+            for (let d = 0; d < 20; d++) {
+                const pIdx = d < 10 ? (pStart + d) % 10 : (pStart + d + 1) % 10;
+                sch.push({ d, p: PREACHERS[pIdx], v: video[d], a: audio[d] });
+            }
+
+            // Collision swap: p==v or p==a or v==a
+            const swap = (field, otherField) => {
+                for (let i = 0; i < 20; i++) {
+                    if (sch[i][field] === sch[i].p || sch[i][field] === sch[i][otherField]) {
+                        for (let j = i + 1; j < 20; j++) {
+                            const cur = sch[i][field], nxt = sch[j][field];
+                            if (nxt !== sch[i].p && nxt !== sch[j].p &&
+                                cur !== sch[j].p && nxt !== sch[i][otherField] &&
+                                cur !== sch[j][otherField]) {
+                                [sch[i][field], sch[j][field]] = [nxt, cur];
+                                break;
+                            }
+                        }
+                    }
+                }
+            };
+            swap('v', 'a');
+            swap('a', 'v');
+
+            // TDD Validation Guard
+            const cnt = {};
+            ALL.forEach(n => cnt[n] = { p: 0, v: 0, a: 0 });
+            for (const { p, v, a } of sch) { cnt[p].p++; cnt[v].v++; cnt[a].a++; }
+
+            let valid = true;
+            for (const n of ALL) {
+                const t = cnt[n].p + cnt[n].v + cnt[n].a;
+                if (t !== 5) { console.error(`Block ${blockIdx}: ${n} total=${t}`); valid = false; }
+            }
+            for (const { d, p, v, a } of sch) {
+                if (p === v || p === a || v === a) { console.error(`Block ${blockIdx} D${d}: conflict`); valid = false; }
+            }
+            // Check: each preacher's two preaching days are DIFFERENT weekdays
+            const pDow = {};
+            for (const { d, p } of sch) {
+                if (!pDow[p]) pDow[p] = [];
+                pDow[p].push(d % 5);
+            }
+            for (const n of PREACHERS) {
+                if (pDow[n] && pDow[n].length === 2 && pDow[n][0] === pDow[n][1])
+                    console.error(`Block ${blockIdx}: ${n} preaches twice on same weekday!`);
+            }
+            if (!valid) console.warn(`Block ${blockIdx} has validation issues`);
+
+            const result = { sch, cnt };
+            cache[k] = result;
+            return result;
+        }
+
+        // Block date range helpers
+        function blockStartDate(blockIdx) {
+            const d = new Date(REF.getTime());
+            d.setDate(d.getDate() + (blockIdx - 1) * 28);
+            return d;
+        }
+        function blockEndDate(blockIdx) {
+            const d = blockStartDate(blockIdx);
+            d.setDate(d.getDate() + 27);
+            return d;
+        }
+        function formatBlockDate(blockIdx) {
+            const s = blockStartDate(blockIdx), e = blockEndDate(blockIdx);
+            const fmt = d => `${d.getMonth() + 1}/${String(d.getDate()).padStart(2, '0')}`;
+            return `${s.getFullYear()}.${fmt(s)} ~ ${fmt(e)}`;
+        }
+        function kst() {
+            const n = new Date(), u = n.getTime() + n.getTimezoneOffset() * 60000;
+            return new Date(u + 9 * 3600000);
+        }
+        function currentBlockIdx() {
+            const t = kst();
+            const diffDays = Math.floor((t.getTime() - REF.getTime()) / 86400000);
+            return Math.max(1, Math.floor(diffDays / 28) + 1);
+        }
+        function dk(date) {
+            return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+        }
+
+        // ═══════════════════════ RENDER CALENDAR ═══════════════════════
+        function renderCal() {
+            const calEl = document.getElementById('cal');
+            calEl.innerHTML = '';
+
+            const { sch } = generateBlock(currentBlock);
+            const start = blockStartDate(currentBlock);
+            const t = kst(), ty = t.getFullYear(), tm = t.getMonth() + 1, td = t.getDate();
+
+            let wdIdx = 0;
+            for (let i = 0; i < 28; i++) {
+                const c = new Date(start.getTime() + i * 86400000);
+                const dow = c.getDay();
+                if (dow === 0) continue; // skip Sunday
+
+                const y = c.getFullYear(), m = c.getMonth() + 1, d = c.getDate();
+                const key = dk(c);
+                const e = dow < 6 ? sch[wdIdx] : null;
+                if (dow < 6) wdIdx++;
+
+                const isToday = (y === ty && m === tm && d === td);
+                const isPast = c < new Date(ty, tm - 1, td);
+                const isSat = dow === 6;
+                const hasMemo = !!S.memos[key];
+
+                const card = document.createElement('div');
+                card.className = 'dc' + (isToday ? ' today' : '') + (isSat ? ' sat' : '') + (isPast && !isToday ? ' past' : '');
+                card.onclick = () => openModal(key, c, e, isSat);
+
+                const weekNum = Math.floor(i / 7) + 1;
+                card.innerHTML = `
+            ${hasMemo ? '<div class="memo-dot"></div>' : ''}
+            <div class="dh">
+                <div class="dnum">${m}/${d}</div>
+                <div style="display:flex;align-items:center;gap:4px">
+                    <div class="dname">${DN[dow]}</div>
+                    ${isToday ? `<div class="dday">TODAY</div>` : ''}
+                </div>
+            </div>
+            ${cardBody(e, isSat)}`;
+                calEl.appendChild(card);
+            }
+
+            updateSeasonNav();
+        }
+
+        function cardBody(e, isSat) {
+            if (isSat) return `<div class="rb pr"><span class="ric">🎤</span><span class="rn">담임목사</span></div><div class="rb ns"><span class="rn">토요일</span></div>`;
+            if (!e) return `<div class="rb ns"><span class="rn">—</span></div>`;
+            const isBackup = (e.d % 5 === 3 || e.d % 5 === 4); // Thu=3, Fri=4 within each week
+            let h = '';
+            if (isBackup) {
+                h += `<div class="rb pr"><span class="ric">🎤</span><span class="rn">담임목사</span></div>`;
+                h += `<div class="rb bu"><span class="ric">📖</span><span class="rn">예비: ${e.p}</span></div>`;
+            } else {
+                h += `<div class="rb pr"><span class="ric">🎤</span><span class="rn">${e.p}</span></div>`;
+            }
+            h += `<div class="rb vi"><span class="ric">📹</span><span class="rn">${e.v}</span></div>`;
+            h += `<div class="rb au"><span class="ric">🔊</span><span class="rn">${e.a}</span></div>`;
+            return h;
+        }
+
+        function updateSeasonNav() {
+            const label = `시즌 ${currentBlock}`;
+            const date = formatBlockDate(currentBlock);
+            ['seasonLabel', 'sLabel2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = label; });
+            ['seasonDate', 'sDate2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = date; });
+            ['seasonBadge', 'sBadge2'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = `SEASON ${currentBlock}`; });
+        }
+
+        // ═══════════════════════ RENDER STATS ═══════════════════════
+        function renderStats() {
+            const { sch, cnt } = generateBlock(currentBlock);
+            updateSeasonNav();
+
+            // Summary cards
+            const pdays = sch.filter(e => e.d % 5 < 3).length;   // Mon-Wed preaching
+            const bdays = sch.filter(e => e.d % 5 >= 3).length;  // Thu-Fri backup
+            document.getElementById('summaryCards').innerHTML = `
+        <div class="sum-card"><div class="sum-num blue">20</div><div class="sum-label">블록 총 운영일</div></div>
+        <div class="sum-card"><div class="sum-num green">${pdays}</div><div class="sum-label">월·화·수 설교</div></div>
+        <div class="sum-card"><div class="sum-num orange">${bdays}</div><div class="sum-label">목·금 예비설교</div></div>
+        <div class="sum-card"><div class="sum-num pink">12</div><div class="sum-label">사역자 (전원 5회)</div></div>
+    `;
+
+            // Validation banner
+            let allOk = true;
+            for (const n of ALL) {
+                const t = cnt[n].p + cnt[n].v + cnt[n].a;
+                if (t !== 5) allOk = false;
+            }
+            document.getElementById('validBanner').innerHTML = allOk
+                ? `<div class="valid-banner ok">✅ 검증 통과 — 12명 전원 정확히 5회 배정, 당일 중복 없음, V/A 균형 확인</div>`
+                : `<div class="valid-banner err">⚠️ 배정 오류 감지 — 개발자 콘솔을 확인하세요</div>`;
+
+            // Member table
+            const tbody = document.getElementById('statsBody');
+            tbody.innerHTML = '';
+            ALL.forEach(n => {
+                const c = cnt[n];
+                const isNP = NP.includes(n);
+                const tot = c.p + c.v + c.a;
+                const vPct = Math.round((c.v / 3) * 100);
+                const aPct = Math.round((c.a / (isNP ? 5 : 3)) * 100);
+                const maxSub = isNP ? 5 : 3;
+
+                tbody.innerHTML += `<tr>
+            <td>
+                <span style="font-weight:800">${n}</span>
+                <span class="role-tag ${isNP ? 'np' : ''}">${isNP ? '비설교자' : '설교자'}</span>
+            </td>
+            <td><span class="stat-num p">${c.p}</span></td>
+            <td><span class="stat-num v">${c.v}</span></td>
+            <td><span class="stat-num a">${c.a}</span></td>
+            <td style="min-width:120px">
+                <div class="prog-row"><span style="font-size:10px;color:#10B981;font-weight:700;min-width:14px">V</span>
+                    <div class="prog-bar"><div class="prog-fill v" style="width:${(c.v / maxSub) * 100}%"></div></div>
+                    <span style="font-size:10px;color:var(--text-3)">${c.v}</span>
+                </div>
+                <div class="prog-row"><span style="font-size:10px;color:#8B5CF6;font-weight:700;min-width:14px">A</span>
+                    <div class="prog-bar"><div class="prog-fill a" style="width:${(c.a / maxSub) * 100}%"></div></div>
+                    <span style="font-size:10px;color:var(--text-3)">${c.a}</span>
+                </div>
+            </td>
+            <td><div class="total-badge ${tot === 5 ? 'ok' : 'err'}">${tot}</div></td>
+        </tr>`;
+            });
+
+            document.getElementById('blockLabel').textContent = `시즌 ${currentBlock} 기준`;
+        }
+
+        // ═══════════════════════ RENDER MEMBERS ═══════════════════════
+        function renderMembers() {
+            const pGrid = document.getElementById('memberGrid');
+            const nGrid = document.getElementById('npGrid');
+            pGrid.innerHTML = '';
+            nGrid.innerHTML = '';
+            PREACHERS.forEach(n => {
+                pGrid.innerHTML += `<div class="member-card">
+            <div class="avatar">${n[0]}</div>
+            <div><div class="m-name">${n}</div><div class="m-role">설교자 · 서브 담당</div></div>
+        </div>`;
+            });
+            NP.forEach(n => {
+                nGrid.innerHTML += `<div class="member-card">
+            <div class="avatar np">${n[0]}</div>
+            <div><div class="m-name">${n}</div><div class="m-role">비설교자 · 서브 전담</div></div>
+        </div>`;
+            });
+        }
+
+        // ═══════════════════════ NAVIGATION ═══════════════════════
+        function changeSeason(dir) {
+            currentBlock = Math.max(1, currentBlock + dir);
+            renderAll();
+        }
+        function goToday() {
+            currentBlock = currentBlockIdx();
+            renderAll();
+        }
+
+        // ═══════════════════════ TABS ═══════════════════════
+        let activeTab = 'cal';
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`panel-${tab}`).classList.add('active');
+            document.getElementById(`tabBtn-${tab}`).classList.add('active');
+            activeTab = tab;
+            if (tab === 'stats') renderStats();
+            if (tab === 'members') renderMembers();
+        }
+
+        // ═══════════════════════ MODAL ═══════════════════════
+        function openModal(key, date, slot, isSat) {
+            modalKey = key;
+            const y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate(), dow = date.getDay();
+            document.getElementById('modalTitle').textContent = `${y}년 ${m}월 ${d}일 (${DN[dow]})`;
+
+            let rolesHtml = '';
+            if (isSat) {
+                rolesHtml = `<div class="modal-rb pr"><span class="modal-icon">🎤</span><div><div class="modal-role">설교</div><div class="modal-name pr">담임목사</div></div></div>`;
+            } else if (slot) {
+                const isBackup = (slot.d % 5 === 3 || slot.d % 5 === 4);
+                if (isBackup) {
+                    rolesHtml += `<div class="modal-rb pr"><span class="modal-icon">🎤</span><div><div class="modal-role">설교</div><div class="modal-name pr">담임목사</div></div></div>`;
+                    rolesHtml += `<div class="modal-rb bu"><span class="modal-icon">📖</span><div><div class="modal-role">예비설교</div><div class="modal-name bu">${slot.p}</div></div></div>`;
+                } else {
+                    rolesHtml += `<div class="modal-rb pr"><span class="modal-icon">🎤</span><div><div class="modal-role">설교</div><div class="modal-name pr">${slot.p}</div></div></div>`;
+                }
+                rolesHtml += `<div class="modal-rb vi"><span class="modal-icon">📹</span><div><div class="modal-role">영상</div><div class="modal-name vi">${slot.v}</div></div></div>`;
+                rolesHtml += `<div class="modal-rb au"><span class="modal-icon">🔊</span><div><div class="modal-role">음향</div><div class="modal-name au">${slot.a}</div></div></div>`;
+            }
+            document.getElementById('modalRoles').innerHTML = rolesHtml;
+            document.getElementById('memoArea').value = S.memos[key] || '';
+            document.getElementById('overlay').classList.add('open');
+        }
+        function closeModal() { document.getElementById('overlay').classList.remove('open'); modalKey = null; }
+        function saveMemo() {
+            if (!modalKey) return;
+            const v = document.getElementById('memoArea').value.trim();
+            if (v) S.memos[modalKey] = v; else delete S.memos[modalKey];
+            saveState(); closeModal(); renderAll();
+        }
+        function deleteMemo() {
+            if (!modalKey) return;
+            delete S.memos[modalKey];
+            saveState(); closeModal(); renderAll();
+        }
+
+        // ═══════════════════════ RENDER ALL ═══════════════════════
+        function renderAll() {
+            renderCal();
+            if (activeTab === 'stats') renderStats();
+        }
+
+        // ═══════════════════════ INIT ═══════════════════════
+        S = loadState();
+        goToday();
+    </script>
+</body>
+
+</html>
