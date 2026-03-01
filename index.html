@@ -1448,53 +1448,110 @@
         const B_NP = '손세윤';
 
         // 10-day mathematically perfect template for 5 Preachers and 1 NP
-        const G_TMPL = [
-            // Week 1 of the group
-            {p: 0, v:'N', a: 1},
-            {p: 1, v: 2,  a:'N'},
-            {p: 2, v: 3,  a: 4},
-            {p: 3, v:'N', a: 0},
-            {p: 4, v: 0,  a: 2},
-            // Week 2 of the group
-            {p: 2, v: 4,  a:'N'},
-            {p: 3, v: 1,  a: 4},
-            {p: 4, v: 0,  a: 1},
-            {p: 0, v:'N', a: 3},
-            {p: 1, v: 2,  a: 3}
-        ];
+        // 50-day (10-week) mathematically perfect UNIVERSAL ROTATION template
+        // 1. Preachers shift their starting day forward by exactly 1 day every week (+1 Shift).
+        // 2. Sub-roles (Video/Audio) ALSO flawlessly rotate, completely eliminating "fixed days" for anyone.
+        // 3. Exactly 5 total assignments per person in every 4-calendar-week season.
+        
+
+const G_TMPL_50_FULL = [
+  // W1
+  {p: 0, v: 'N', a: 1},
+  {p: 1, v: 2, a: 'N'},
+  {p: 2, v: 'N', a: 3},
+  {p: 3, v: 4, a: 0},
+  {p: 4, v: 1, a: 2},
+  // W2
+  {p: 1, v: 3, a: 4},
+  {p: 2, v: 0, a: 1},
+  {p: 3, v: 2, a: 4},
+  {p: 4, v: 0, a: 'N'},
+  {p: 0, v: 'N', a: 3},
+  // W3
+  {p: 2, v: 3, a: 4},
+  {p: 3, v: 0, a: 'N'},
+  {p: 4, v: 'N', a: 1},
+  {p: 0, v: 2, a: 'N'},
+  {p: 1, v: 3, a: 4},
+  // W4
+  {p: 3, v: 'N', a: 0},
+  {p: 4, v: 1, a: 2},
+  {p: 0, v: 3, a: 4},
+  {p: 1, v: 0, a: 2},
+  {p: 2, v: 1, a: 'N'},
+  // W5
+  {p: 4, v: 0, a: 1},
+  {p: 0, v: 2, a: 3},
+  {p: 1, v: 'N', a: 4},
+  {p: 2, v: 4, a: 'N'},
+  {p: 3, v: 'N', a: 1},
+  // W6
+  {p: 0, v: 2, a: 'N'},
+  {p: 1, v: 'N', a: 3},
+  {p: 2, v: 4, a: 0},
+  {p: 3, v: 1, a: 2},
+  {p: 4, v: 3, a: 0},
+  // W7
+  {p: 1, v: 2, a: 'N'},
+  {p: 2, v: 3, a: 4},
+  {p: 3, v: 0, a: 1},
+  {p: 4, v: 'N', a: 2},
+  {p: 0, v: 3, a: 'N'},
+  // W8
+  {p: 2, v: 4, a: 0},
+  {p: 3, v: 'N', a: 1},
+  {p: 4, v: 1, a: 'N'},
+  {p: 0, v: 3, a: 4},
+  {p: 1, v: 0, a: 2},
+  // W9
+  {p: 3, v: 'N', a: 4},
+  {p: 4, v: 0, a: 'N'},
+  {p: 0, v: 1, a: 2},
+  {p: 1, v: 3, a: 4},
+  {p: 2, v: 'N', a: 0},
+  // W10
+  {p: 4, v: 1, a: 2},
+  {p: 0, v: 3, a: 4},
+  {p: 1, v: 0, a: 'N'},
+  {p: 2, v: 'N', a: 3},
+  {p: 3, v: 2, a: 1},
+];
 
         function generateBlock(blockIdx) {
             const k = `blk-${blockIdx}`;
             if (cache[k]) return cache[k];
 
             const sch = [];
-            // Shift +1 per block ensures all 5 preachers rotate starting days
-            const shift = (blockIdx - 1) % 5;
             
-            const mapDay = (tmplSlot, dayIdx, P_ARR, NP) => {
-                const pMap = i => P_ARR[(i + shift) % 5];
+            // blockIdx starts at 1. blockIdx 1 = gw 0,1 (A/B).
+            const startGw = ((blockIdx - 1) % 5) * 2;
+            
+            function getDay(gw_offset, d_idx, P_ARR, NP) {
+                // 50-day global template maps gw 0..9
+                // d_idx 0..4
+                const slot = G_TMPL_50_FULL[gw_offset * 5 + d_idx];
                 return {
-                    d: dayIdx,
-                    p: tmplSlot.p === 'N' ? NP : pMap(tmplSlot.p),
-                    v: tmplSlot.v === 'N' ? NP : pMap(tmplSlot.v),
-                    a: tmplSlot.a === 'N' ? NP : pMap(tmplSlot.a)
+                    d: d_idx,
+                    p: slot.p === 'N' ? NP : P_ARR[slot.p],
+                    v: slot.v === 'N' ? NP : P_ARR[slot.v],
+                    a: slot.a === 'N' ? NP : P_ARR[slot.a],
                 };
-            };
+            }
 
             for (let d = 0; d < 20; d++) {
-                let slot, dayItem;
-                if (d < 5) { // A조 W1
-                    slot = G_TMPL[d];
-                    dayItem = mapDay(slot, d, A_P, A_NP);
-                } else if (d < 10) { // B조 W1
-                    slot = G_TMPL[d - 5];
-                    dayItem = mapDay(slot, d, B_P, B_NP);
-                } else if (d < 15) { // A조 W2
-                    slot = G_TMPL[d - 5];
-                    dayItem = mapDay(slot, d, A_P, A_NP);
-                } else { // B조 W2
-                    slot = G_TMPL[d - 10];
-                    dayItem = mapDay(slot, d, B_P, B_NP);
+                let dayItem;
+                if (d < 5) { 
+                    // A조 첫번째 주 (gw_offset = startGw)
+                    dayItem = getDay(startGw, d, A_P, A_NP);
+                } else if (d < 10) { 
+                    // B조 첫번째 주
+                    dayItem = getDay(startGw, d - 5, B_P, B_NP);
+                } else if (d < 15) { 
+                    // A조 두번째 주 (gw_offset = startGw + 1)
+                    dayItem = getDay(startGw + 1, d - 10, A_P, A_NP);
+                } else { 
+                    // B조 두번째 주
+                    dayItem = getDay(startGw + 1, d - 15, B_P, B_NP);
                 }
                 sch.push(dayItem);
             }
@@ -1794,8 +1851,9 @@
                     <strong>💡 배정 순번 로직 안내 (오차율 0% 보장)</strong>
                     <ul>
                         <li><strong>격주 전담</strong>: A조는 1, 3주 차를 전담하고 B조는 2, 4주 차를 전담합니다.</li>
-                        <li><strong>당일 중복 철저 배제</strong>: 설교, 영상, 음향 역할이 당일에 겹치지 않는 완벽한 패턴(템플릿)을 반복합니다.</li>
-                        <li><strong>시즌별 자동 로테이션 (Shift)</strong>: 특정 요일 독박을 막기 위해 <strong>시즌(4주 블록)이 바뀔 때마다 전체 순번을 한 칸씩 이동</strong>시킵니다. (예: 1번 사역자가 지난 시즌에 월/수 설교를 했다면, 새 시즌엔 화/목 설교 패턴으로 이동)</li>
+                        <li><strong>당일 중복 철저 배제</strong>: 컴퓨터가 미리 찾아둔 '설교/영상/음향이 당일에 절대 겹치지 않는 1주일 치 수학적 정답 패턴(템플릿)'을 사용합니다.</li>
+                        <li><strong>설교자 순환 로테이션 (+1 Shift)</strong>: 새로운 주차를 맡을 때마다(시즌 불문), 전체 템플릿의 시작 요일이 <strong>무조건 한 칸씩(월→화→수...) 앞으로 전진</strong>합니다.</li>
+                        <li><strong>서브(영상/음향) 로테이션 원리</strong>: 서브 역할 역시 설교자와 동일한 템플릿에 귀속되어 있으므로, <strong>설교자가 한 칸 전진할 때 서브도 톱니바퀴처럼 함께 한 칸씩 전진</strong>합니다. 이를 통해 영상이나 음향을 특정 요일에만 연달아 서는 불공평한 '독박' 상황이 발생하지 않고 골고루 분산됩니다.</li>
                     </ul>
                 </div>
                 <div class="ab-group">
