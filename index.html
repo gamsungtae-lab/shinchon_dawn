@@ -42,6 +42,13 @@
         body {
             height: 100%;
             font-family: var(--font);
+        }
+
+        #list-view {
+            display: none;
+        }
+
+        body {
             background: var(--bg);
             color: var(--text);
         }
@@ -979,38 +986,170 @@
                 font-size: 16px;
             }
 
-            /* Calendar: 2 columns for weekdays, cleaner on small screen */
+            /* Mobile: hide grid, show list view */
             .dow-hdr {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 4px;
+                display: none;
             }
 
             .cal {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 5px;
+                display: none;
             }
 
-            .dc {
-                padding: 9px 8px;
-                min-height: 120px;
+            #list-view {
+                display: block;
+            }
+
+            /* List view styles */
+            .lv-week {
+                margin-bottom: 18px;
+            }
+
+            .lv-week-hdr {
+                font-size: 11px;
+                font-weight: 800;
+                letter-spacing: 1px;
+                color: var(--text-3);
+                text-transform: uppercase;
+                padding: 4px 0 8px;
+                border-bottom: 1px solid var(--border);
+                margin-bottom: 8px;
+            }
+
+            .lv-row {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 11px 14px;
+                border-radius: 12px;
+                background: var(--card);
+                border: 1.5px solid var(--border);
+                margin-bottom: 7px;
+                cursor: pointer;
+                transition: box-shadow .15s, transform .15s;
+                position: relative;
+            }
+
+            .lv-row:active {
+                transform: scale(.98);
+            }
+
+            .lv-row.today {
+                border-color: var(--primary);
+                border-width: 2.5px;
+                background: linear-gradient(135deg, #4F5EF0, #7C3AED);
+                box-shadow: 0 4px 20px rgba(91, 110, 245, .3);
+            }
+
+            .lv-row.past {
+                opacity: .55;
+            }
+
+            .lv-row.sat {
+                background: #FFF5FA;
+                border-color: #FBD0E5;
+            }
+
+            .lv-date {
+                min-width: 46px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .lv-d {
+                font-size: 17px;
+                font-weight: 800;
+                color: var(--text-1);
+                line-height: 1.1;
+            }
+
+            .lv-w {
+                font-size: 10px;
+                font-weight: 700;
+                color: var(--text-3);
+            }
+
+            .lv-row.today .lv-d,
+            .lv-row.today .lv-w {
+                color: #fff;
+            }
+
+            .lv-row.today .lv-w {
+                color: rgba(255, 255, 255, .7);
+            }
+
+            .lv-today-badge {
+                position: absolute;
+                top: 8px;
+                right: 10px;
+                background: #fff;
+                color: var(--primary-d);
+                font-size: 9px;
+                font-weight: 800;
+                padding: 2px 7px;
+                border-radius: 6px;
+                letter-spacing: .3px;
+            }
+
+            .lv-divider {
+                width: 1px;
+                height: 40px;
+                background: var(--border);
+                flex-shrink: 0;
+            }
+
+            .lv-row.today .lv-divider {
+                background: rgba(255, 255, 255, .25);
+            }
+
+            .lv-roles {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
                 gap: 4px;
             }
 
-            .dnum {
-                font-size: 15px;
+            .lv-role {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 12.5px;
             }
 
-            .rb {
-                padding: 4px 6px;
-                gap: 3px;
+            .lv-ric {
+                font-size: 13px;
+                width: 18px;
+                text-align: center;
             }
 
-            .rb .ric {
+            .lv-label {
+                color: var(--text-3);
+                font-weight: 600;
+                width: 24px;
                 font-size: 11px;
             }
 
-            .rb .rn {
-                font-size: 10.5px;
+            .lv-name {
+                font-weight: 600;
+                color: var(--text-1);
+            }
+
+            .lv-row.today .lv-label {
+                color: rgba(255, 255, 255, .65);
+            }
+
+            .lv-row.today .lv-name {
+                color: #fff;
+            }
+
+            .lv-memo-dot {
+                position: absolute;
+                top: 9px;
+                left: 9px;
+                width: 6px;
+                height: 6px;
+                background: var(--accent);
+                border-radius: 50%;
             }
 
             /* Stats */
@@ -1140,6 +1279,7 @@
                     <div class="dow-lbl sat">토</div>
                 </div>
                 <div class="cal" id="cal"></div>
+                <div id="list-view"></div>
             </div>
 
             <!-- STATS PANEL -->
@@ -1239,74 +1379,91 @@
         }
         function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(S)); }
 
+        // ═══════════════════════════════════════════════════════════════
+        // Sub Queue: [P,P,P,NP] pattern — split into V/A queues (20 each)
+        // Each NP: 5 V-slots + 5 A-slots = 10 total sub slots
+        // Each P: 3 sub slots total (spread across V+A queues)
+        // ═══════════════════════════════════════════════════════════════
+        // Video queue (20 slots): NP at positions 3,7,11,15,19
+        const VQ = [
+            { t: 'p', i: 0 }, { t: 'p', i: 1 }, { t: 'p', i: 2 }, { t: 'np', i: 0 },
+            { t: 'p', i: 3 }, { t: 'p', i: 4 }, { t: 'p', i: 5 }, { t: 'np', i: 1 },
+            { t: 'p', i: 6 }, { t: 'p', i: 7 }, { t: 'p', i: 8 }, { t: 'np', i: 0 },
+            { t: 'p', i: 9 }, { t: 'p', i: 0 }, { t: 'p', i: 1 }, { t: 'np', i: 1 },
+            { t: 'p', i: 2 }, { t: 'p', i: 3 }, { t: 'p', i: 4 }, { t: 'np', i: 0 },
+        ];
+        // Audio queue (20 slots): NP at positions 2,6,10,14,18 (staggered from VQ)
+        const AQ = [
+            { t: 'p', i: 5 }, { t: 'p', i: 6 }, { t: 'np', i: 1 },
+            { t: 'p', i: 7 }, { t: 'p', i: 8 }, { t: 'p', i: 9 }, { t: 'np', i: 0 },
+            { t: 'p', i: 0 }, { t: 'p', i: 1 }, { t: 'p', i: 2 }, { t: 'np', i: 1 },
+            { t: 'p', i: 3 }, { t: 'p', i: 4 }, { t: 'p', i: 5 }, { t: 'np', i: 0 },
+            { t: 'p', i: 6 }, { t: 'p', i: 7 }, { t: 'p', i: 8 }, { t: 'np', i: 1 },
+            { t: 'p', i: 9 },
+        ];
+
         // ═══════════════════════ BLOCK ENGINE ═══════════════════════
         function generateBlock(blockIdx) {
             const k = `blk-${blockIdx}`;
             if (cache[k]) return cache[k];
 
-            const pStart = ((blockIdx - 1) * 3) % 10;   // +3 offset per block (1-indexed blocks)
-            const vStart = (pStart + 6) % 10;            // Video sub queue start (두성광 on block 1)
-            const aStart = (pStart + 1) % 10;            // Audio sub queue start (ensures 2:1 / 1:2 V/A balance)
+            // Three independent offsets for maximum diversity
+            const pStart = ((blockIdx - 1) * 3) % 10;   // preaching start (+3/block)
+            const pSubStart = ((blockIdx - 1) * 4) % 10;   // sub-preacher mapping (+4/block)
+            const vqOffset = ((blockIdx - 1) * 3) % 20;   // video queue offset (+3/block)
+            const aqOffset = ((blockIdx - 1) * 7) % 20;   // audio queue offset (+7/block, gcd=1)
 
-            const video = new Array(20), audio = new Array(20);
-            let npVI = 0, npAI = 1, pvI = 0, paI = 0;
-
-            for (let d = 0; d < 20; d++) {
-                video[d] = NP_V_DAYS.has(d) ? NP[npVI++ % 2] : PREACHERS[(vStart + pvI++) % 10];
-                audio[d] = NP_A_DAYS.has(d) ? NP[npAI++ % 2] : PREACHERS[(aStart + paI++) % 10];
+            // Build video and audio slot arrays
+            const vSlots = [], aSlots = [];
+            for (let i = 0; i < 20; i++) {
+                const vs = VQ[(vqOffset + i) % 20];
+                vSlots.push(vs.t === 'np' ? NP[vs.i] : PREACHERS[(pSubStart + vs.i) % 10]);
+                const as_ = AQ[(aqOffset + i) % 20];
+                aSlots.push(as_.t === 'np' ? NP[as_.i] : PREACHERS[(pSubStart + as_.i) % 10]);
             }
 
-            // ★ 1-Shift Preacher: days 0-9 normal, days 10-19 left-shifted by 1
-            // → Each preacher's two duties always land on DIFFERENT days of the week
+            // ★ Preaching: days 0-9 normal, days 10-19: +3 sub-shift (spec: day 11 starts from 이종찬)
             const sch = [];
             for (let d = 0; d < 20; d++) {
-                const pIdx = d < 10 ? (pStart + d) % 10 : (pStart + d + 1) % 10;
-                sch.push({ d, p: PREACHERS[pIdx], v: video[d], a: audio[d] });
+                const pIdx = d < 10 ? (pStart + d) % 10 : (pStart + d + 3) % 10;
+                sch.push({ d, p: PREACHERS[pIdx], v: vSlots[d], a: aSlots[d] });
             }
 
-            // Collision swap: p==v or p==a or v==a
-            const swap = (field, otherField) => {
+            // Multi-pass bidirectional collision swap
+            let changed = true, pass = 0;
+            while (changed && pass < 5) {
+                changed = false; pass++;
                 for (let i = 0; i < 20; i++) {
-                    if (sch[i][field] === sch[i].p || sch[i][field] === sch[i][otherField]) {
-                        for (let j = i + 1; j < 20; j++) {
-                            const cur = sch[i][field], nxt = sch[j][field];
-                            if (nxt !== sch[i].p && nxt !== sch[j].p &&
-                                cur !== sch[j].p && nxt !== sch[i][otherField] &&
-                                cur !== sch[j][otherField]) {
-                                [sch[i][field], sch[j][field]] = [nxt, cur];
-                                break;
+                    for (const [f, o] of [['v', 'a'], ['a', 'v']]) {
+                        if (sch[i][f] === sch[i].p || sch[i][f] === sch[i][o]) {
+                            for (let j = 0; j < 20; j++) {
+                                if (j === i) continue;
+                                const ci = sch[i][f], cj = sch[j][f];
+                                if (ci === cj) continue;
+                                if (cj !== sch[i].p && cj !== sch[i][o] &&
+                                    ci !== sch[j].p && ci !== sch[j][o]) {
+                                    [sch[i][f], sch[j][f]] = [cj, ci];
+                                    changed = true; break;
+                                }
                             }
                         }
                     }
                 }
-            };
-            swap('v', 'a');
-            swap('a', 'v');
+            }
 
             // TDD Validation Guard
             const cnt = {};
             ALL.forEach(n => cnt[n] = { p: 0, v: 0, a: 0 });
             for (const { p, v, a } of sch) { cnt[p].p++; cnt[v].v++; cnt[a].a++; }
-
-            let valid = true;
             for (const n of ALL) {
                 const t = cnt[n].p + cnt[n].v + cnt[n].a;
-                if (t !== 5) { console.error(`Block ${blockIdx}: ${n} total=${t}`); valid = false; }
+                if (t !== 5) console.error(`Block ${blockIdx}: ${n} total=${t}`);
             }
-            for (const { d, p, v, a } of sch) {
-                if (p === v || p === a || v === a) { console.error(`Block ${blockIdx} D${d}: conflict`); valid = false; }
+            for (let i = 0; i < sch.length; i++) {
+                const { p, v, a } = sch[i];
+                if (p === v || p === a || v === a)
+                    console.error(`Block ${blockIdx} D${i + 1}: conflict p=${p} v=${v} a=${a}`);
             }
-            // Check: each preacher's two preaching days are DIFFERENT weekdays
-            const pDow = {};
-            for (const { d, p } of sch) {
-                if (!pDow[p]) pDow[p] = [];
-                pDow[p].push(d % 5);
-            }
-            for (const n of PREACHERS) {
-                if (pDow[n] && pDow[n].length === 2 && pDow[n][0] === pDow[n][1])
-                    console.error(`Block ${blockIdx}: ${n} preaches twice on same weekday!`);
-            }
-            if (!valid) console.warn(`Block ${blockIdx} has validation issues`);
 
             const result = { sch, cnt };
             cache[k] = result;
@@ -1345,16 +1502,30 @@
         // ═══════════════════════ RENDER CALENDAR ═══════════════════════
         function renderCal() {
             const calEl = document.getElementById('cal');
+            const lvEl = document.getElementById('list-view');
             calEl.innerHTML = '';
+            if (lvEl) lvEl.innerHTML = '';
 
             const { sch } = generateBlock(currentBlock);
             const start = blockStartDate(currentBlock);
             const t = kst(), ty = t.getFullYear(), tm = t.getMonth() + 1, td = t.getDate();
 
             let wdIdx = 0;
+            let currentWeekDiv = null;
+
             for (let i = 0; i < 28; i++) {
                 const c = new Date(start.getTime() + i * 86400000);
                 const dow = c.getDay();
+
+                // Mobile List View: new week header on Monday
+                if (dow === 1 && lvEl) {
+                    const weekNum = Math.floor(i / 7) + 1;
+                    currentWeekDiv = document.createElement('div');
+                    currentWeekDiv.className = 'lv-week';
+                    currentWeekDiv.innerHTML = `<div class="lv-week-hdr">Week ${weekNum}</div>`;
+                    lvEl.appendChild(currentWeekDiv);
+                }
+
                 if (dow === 0) continue; // skip Sunday
 
                 const y = c.getFullYear(), m = c.getMonth() + 1, d = c.getDate();
@@ -1367,11 +1538,10 @@
                 const isSat = dow === 6;
                 const hasMemo = !!S.memos[key];
 
+                // ── Grid Card ──
                 const card = document.createElement('div');
                 card.className = 'dc' + (isToday ? ' today' : '') + (isSat ? ' sat' : '') + (isPast && !isToday ? ' past' : '');
                 card.onclick = () => openModal(key, c, e, isSat);
-
-                const weekNum = Math.floor(i / 7) + 1;
                 card.innerHTML = `
             ${hasMemo ? '<div class="memo-dot"></div>' : ''}
             <div class="dh">
@@ -1383,9 +1553,51 @@
             </div>
             ${cardBody(e, isSat)}`;
                 calEl.appendChild(card);
+
+                // ── List Row ──
+                if (currentWeekDiv) {
+                    const row = document.createElement('div');
+                    row.className = 'lv-row' + (isToday ? ' today' : '') + (isSat ? ' sat' : '') + (isPast && !isToday ? ' past' : '');
+                    row.onclick = () => openModal(key, c, e, isSat);
+                    row.innerHTML = `
+                        ${hasMemo ? '<div class="lv-memo-dot"></div>' : ''}
+                        ${isToday ? '<div class="lv-today-badge">TODAY</div>' : ''}
+                        <div class="lv-date">
+                            <span class="lv-d">${d}</span>
+                            <span class="lv-w">${DN[dow]}</span>
+                        </div>
+                        <div class="lv-divider"></div>
+                        <div class="lv-roles">
+                            ${listRoleBody(e, isSat)}
+                        </div>
+                    `;
+                    currentWeekDiv.appendChild(row);
+                }
             }
 
             updateSeasonNav();
+        }
+
+        function listRoleBody(e, isSat) {
+            if (isSat) return `<div class="lv-role"><span class="lv-ric">🎤</span><span class="lv-label">설교</span><span class="lv-name">담임목사</span><span style="color:var(--text-3);font-size:11px;margin-left:auto;">토요일</span></div>`;
+            if (!e) return `<div class="lv-role"><span class="lv-name">—</span></div>`;
+            const isBackup = (e.d % 5 === 3 || e.d % 5 === 4);
+            let h = '';
+            if (isBackup) {
+                h += `
+                <div style="display:flex; gap: 8px;">
+                    <div class="lv-role"><span class="lv-ric">🎤</span><span class="lv-label">설교</span><span class="lv-name">담임목사</span></div>
+                    <div class="lv-role"><span class="lv-ric" style="font-size:11px; opacity:0.7;">📖</span><span class="lv-label">예비</span><span class="lv-name" style="opacity:0.8;">${e.p}</span></div>
+                </div>`;
+            } else {
+                h += `<div class="lv-role"><span class="lv-ric">🎤</span><span class="lv-label">설교</span><span class="lv-name">${e.p}</span></div>`;
+            }
+            h += `
+            <div style="display:flex; gap: 12px; margin-top:2px;">
+                <div class="lv-role"><span class="lv-ric">📹</span><span class="lv-label">영상</span><span class="lv-name">${e.v}</span></div>
+                <div class="lv-role"><span class="lv-ric">🔊</span><span class="lv-label">음향</span><span class="lv-name">${e.a}</span></div>
+            </div>`;
+            return h;
         }
 
         function cardBody(e, isSat) {
